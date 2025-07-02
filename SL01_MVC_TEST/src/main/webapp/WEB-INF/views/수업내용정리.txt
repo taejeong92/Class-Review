@@ -1,0 +1,2 @@
+[ 수업내용정리 ]
+1. /scott/empdept -> empdept.jsp 응답 

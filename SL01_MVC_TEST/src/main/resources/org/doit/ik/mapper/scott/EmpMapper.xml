@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.doit.ik.mapper.scott.EmpMapper">
+ 
+  <!-- [1] ArrayList<EmpDTO> selectEmpDept(int deptno);  
+  <select id="selectEmpDept" resultType="org.doit.ik.domain.EmpDTO">
+    SELECT * 
+    FROM emp
+    WHERE deptno = #{ deptno }
+    ORDER BY  deptno ASC  
+  </select>
+  -->
+  
+  <!-- [2] ArrayList<EmpDTO> selectEmpDept(int deptno);
+    deptno != 0  때는   WHERE deptno = #{ deptno } 
+    deptno == 0  때는   WHERE deptno IS NULL
+    
+    <if test="deptno == 0">
+       WHERE deptno IS NULL
+    </if>
+    <if test="deptno != 0">
+       WHERE deptno = #{ deptno } 
+    </if>
+    
+    [예외]
+    Request processing failed; 
+    nested exception is org.mybatis.spring.MyBatisSystemException: 
+    nested exception is org.apache.ibatis.reflection.ReflectionException:
+    There is no getter for property named 'deptno' 
+    in 'class java.lang.Integer'
+  -->  
+  <select id="selectEmpDept" resultType="org.doit.ik.domain.EmpDTO">
+    SELECT * 
+    FROM emp
+    <where>
+	    <if test="deptno == 0">
+	        deptno IS NULL
+	    </if>
+	    <if test="deptno != 0">
+	        deptno = #{ deptno } 
+	    </if>
+    </where>     
+    ORDER BY  deptno ASC  
+  </select>
+ 
+  
+  
+  <!-- WHERE deptno IN (10, 20, 30) 동적 쿼리 + mybatis --> 
+  <select id="selectEmp" resultType="org.doit.ik.domain.EmpDTO">
+    SELECT * 
+    FROM emp
+    <where>
+	  <foreach item="deptno" collection="array"
+	        open="deptno in (" separator="," close=")">
+	          #{ deptno }
+	  </foreach>
+	</where>
+    ORDER BY  deptno ASC  
+  </select>
+  
+</mapper>  

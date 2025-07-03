@@ -65,6 +65,27 @@
            </c:forEach>
          </c:otherwise>
        </c:choose>
+       
+       <!-- 검색 부분... -->
+       <tr>
+       	<td colspan="5" align="center">
+       	<form id="searchForm" action="/board/list" method="get">
+       		<select id="type" name="type">
+       			<option value="T">제목</option>
+       			<option value="T">내용</option>
+       			<option value="W">작성자</option>
+       			<option value="TC">제목+내용</option>
+       			<option value="TW">제목+작성자</option>
+       			<option value="TCW">제목+내용+작성자</option>
+       		</select>
+       		<input type="text" name="keyword" style="padding: 7px">
+       		<button type="button" style="min-height: 32px">Search</button>
+       		
+       		<input type="hidden" name="pageNum" value="${ pageMaker.criteria.pageNum }">
+    		<input type="hidden" name="amount" value="${ pageMaker.criteria.amount }">
+       	</form>
+       	</td>
+       </tr>
     </tbody>
     <tfoot>
       <tr>
@@ -94,6 +115,8 @@
     <input type="hidden" name="pageNum" value="${ pageMaker.criteria.pageNum }">
     <input type="hidden" name="amount" value="${ pageMaker.criteria.amount }">
     <!-- 검색조건, 검색어 등등  -->
+    <input type="hidden" name="type" value="${ pageMaker.criteria.type }">
+    <input type="hidden" name="keyword" value='<c:out value="${ pageMaker.criteria.keyword }"/>'>
   </form>
   
 </div>
@@ -145,6 +168,21 @@
 		      .submit();
 	  });	// $("a.move").on("click"	  
 	  
+	  var actionForm = $("#searchForm");
+	  
+	  $(".searchForm button").on("click", function (){
+		  if (searchForm.find("input[ name=keyword]").val()){
+			  alert("검색어를 입력하세요.ㅣ")
+			  return;
+		  }
+		  event.preventDafault();
+		  searchForm.submit();
+	  });
+	  
+	// 검색조건  상태관리 X
+	   $("#type").val('${ empty param.type ? "T" : param.type }');   
+	   $("#searchForm [name=keyword]").val('<c:out value="${pageMaker.criteria.keyword}"/>');  
+			  
   }) // $(function (){ 
 </script>
 </body>

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" type="image/x-icon" href="http://localhost/jspPro/images/SiSt.ico">
-<title>2025. 7. 2. 오후 12:35:43</title>
+<title>2025. 7. 2. 오후 2:22:30</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/cdn-main/example.css">
 <script src="/resources/cdn-main/example.js"></script>
@@ -27,10 +27,10 @@
 </header>
 <div>
   <xmp class="code"> 
-        /board/get.jsp
+        /board/modify.jsp
   </xmp>
   
-  <form action="/board/register" method="post">
+    <form action="/board/modify" method="post">
 	  <table>  
 	    <tbody>
 	      <tr>
@@ -39,11 +39,11 @@
 	      </tr> 
 	      <tr>
 	        <th>제목</th>
-	        <td><input type="text" name="title" class="full"  readonly="readonly"  value="${ boardVO.title }"></td>        
+	        <td><input type="text" name="title" class="full"  value="${ boardVO.title }"></td>        
 	      </tr> 
 	      <tr>
 	        <th>내용</th>
-	        <td><textarea  name="content" class="full" readonly="readonly"><c:out value="${ boardVO.content }"></c:out></textarea></td>        
+	        <td><textarea  name="content" class="full" ><c:out value="${ boardVO.content }"></c:out></textarea></td>        
 	      </tr> 
 	      <tr>
 	        <th>작성자</th>
@@ -54,7 +54,6 @@
 	      <tr>
 	        <td colspan="2">
 	          <button type="button"  data-oper="modify" class="edit">Modify</button>
-	          <button type="button"  data-oper="remove" class="delete">Delete</button>
 	          <button type="button" data-oper="list"  class="list">List</button>
 	        </td>
 	      </tr>
@@ -62,10 +61,14 @@
 	  </table>
 	  
 	  <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+	  
 	  <input type="hidden" name="pageNum" value="${criteria.pageNum }">
       <input type="hidden" name="amount" value="${criteria.amount }">
-	    
-  </form>
+      <!-- 검색조건, 검색어 -->
+      <input type="hidden" name="type" value="${ criteria.type }">
+      <input type="hidden" name="keyword" value='<c:out value="${ criteria.keyword }"/>'>
+	     
+  </form>    
   
 </div>
 
@@ -77,31 +80,13 @@
 	  $("tfoot button").on("click", function (){		  
 		  // data-oper="modify"
 		  let operation = $(this).data("oper");
-		  if (operation == "modify") {
-			//     /board/modify/2
-			//   location.href = '/board/modify?bno=2'  ***
-			// action="/board/register" method="post"
-			formObj
-			   .attr({
-				   "action": "/board/modify", 
-				   "method": "get"
-			   })
-			   .submit();		
-		  } else if (operation == "remove") {
-			  // 작성자 확인 X
-			  if ( confirm("정말 삭제할거냐?") ) {
-				  formObj
-				   .attr({
-					   "action": "/board/remove", 
-					   "method": "get"
-				   })
-				   .submit();
-			  } // if
+		  if (operation == "modify") { 
+			formObj.submit();	 	
 		  } else if (operation == "list") {
 			  
 			  const pageNumClone = $(":hidden[name='pageNum']").clone();
 			  const pageAmountClone = $(":hidden[name='amount']").clone();
-			  
+			  			  
 			  formObj
 			   .attr({
 				   "action": "/board/list", 
@@ -110,29 +95,14 @@
 			   .empty()
 			   .append(pageNumClone)
 			   .append(pageAmountClone)
-			   .submit();
+			   .submit();	
 		  } // if
 		  
 	  }); // $("tfoot button").on("click"
-			  
-	  // list.jsp 코딩을 복사해서 get.jsp 붙여넣기
-	  var result = '<c:out value="${result}" />'; 
-	  checkModal(result); 
-	  history.replaceState({}, null, null);  
-	  function checkModal(result) {
-		if ( result === "" || history.state  )		return ;
-		if ( result === "SUCCESS" ) {
-			alert( `${ boardVO.bno } 번이 수정되었습니다.` );
-			return ;
-		} // if  
-	  } // function checkModal		  
 	  
   }); // $(function (){
 </script>
 
 </body>
-</html>
+</html> 
 
-
-
- 

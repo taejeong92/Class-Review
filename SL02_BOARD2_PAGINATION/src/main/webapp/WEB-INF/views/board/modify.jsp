@@ -61,7 +61,10 @@
 	  </table>
 	  
 	  <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
-	    
+	  
+	  <input type="hidden" name="pageNum" value="${criteria.pageNum }">
+      <input type="hidden" name="amount" value="${criteria.amount }">
+	     
   </form>    
   
 </div>
@@ -77,12 +80,18 @@
 		  if (operation == "modify") { 
 			formObj.submit();	 	
 		  } else if (operation == "list") {
+			  
+			  const pageNumClone = $(":hidden[name='pageNum']").clone();
+			  const pageAmountClone = $(":hidden[name='amount']").clone();
+			  			  
 			  formObj
 			   .attr({
 				   "action": "/board/list", 
 				   "method": "get"
 			   })
 			   .empty()
+			   .append(pageNumClone)
+			   .append(pageAmountClone)
 			   .submit();	
 		  } // if
 		  

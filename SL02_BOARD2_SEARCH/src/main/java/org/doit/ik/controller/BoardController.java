@@ -118,8 +118,13 @@ public class BoardController {
 		
 		rttr.addAttribute("pageNum", criteria.getPageNum());
 		rttr.addAttribute("amount", criteria.getAmount());
+		rttr.addAttribute("type", criteria.getType());
+	    rttr.addAttribute("keyword", criteria.getKeyword());
 		
-		return "redirect:/board/get";
+		//return "redirect:/board/get";
+	    String queryString = criteria.getListLink();
+	    return String.format("redirect:/board/get%s&bno=%d"
+	    		, queryString, boardVO.getBno());
 	}
 	
 	// [문제] ??? remove(???)  삭제할 글번호.

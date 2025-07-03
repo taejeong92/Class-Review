@@ -64,7 +64,10 @@
   
  
  
+ <if test="type == 'T'.toString()">
+ 	content LIKE '#' ${keyword} 
  
+ </if>
  
  
  

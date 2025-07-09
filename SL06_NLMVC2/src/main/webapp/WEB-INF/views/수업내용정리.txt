@@ -1,0 +1,54 @@
+[수업내용정리]
+1. SL06_NLMVC -> SL06_NLMVC2
+2. SL06_NLMVC 프로젝트의 문제점 파악.
+  1) 공지사항 목록      : NoticeController 클래스 필요
+     공지사항 상세보기  : NoticeDetailController 클래스 필요
+     :                             :
+     :                             :
+     -> 1개의 공지사항 컨트롤러 추가하고 각각의 요청을 
+     컨트롤러 메서드가 처리하도록 구현.
+  2) servlet-context.xml
+     <bean>
+     <bean>
+     <bean>
+     :
+     :    
+     -> 자동 빈 객체 생성 등록 처리.
+     
+     <!-- [1] 삭제 -->
+	 <beans:bean id="noticeDao" class="org.doit.ik.persistence.NoticeDao"></beans:bean>
+	 
+	 1) @Repository
+	 2) <context:component-scan base-package="org.doit.ik" />
+	 
+	 <!-- [2] 삭제 -->
+	 <beans:bean name="/customer/notice.htm" class="org.doit.ik.controller.NoticeController">
+	  <beans:constructor-arg ref="noticeDao"></beans:constructor-arg>
+	 </beans:bean>
+     
+3. 공지사항 [쓰기],  수정, 삭제
+  1) <a class="btn-write button" href="noticeReg.htm">글쓰기</a>
+  2) NoticeDao.insert(NoticeVO notice) 확인
+  3) 컨트롤러메서드 선언
+
+3-2. 공지사항 쓰기, [수정] , 삭제
+  1) 공지사항 상세보기 페이지 (noticeDetail.jsp) 의 "수정하기" 버튼 클릭.
+  <a class="btn-edit button" href="noticeEdit.htm?seq=${ notice.seq }">수정</a>
+  2) 
+  
+3-3. 공지사항 쓰기, 수정 , [삭제]
+  1) 삭제 권한 확인 X  -> 이유 ? 인증 후에   .. 
+     
+
+4. 공지사항 쓰기 + 파일 업로드
+  SL06_NLMVC3_ATTACHEDFILE
+
+
+
+
+
+
+
+
+
+
